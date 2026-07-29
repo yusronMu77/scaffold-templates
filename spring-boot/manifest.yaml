@@ -1,0 +1,8 @@
+name: "Spring Boot"
+description: "Registry of supported Spring Boot versions"
+
+# "3.2.x" is a placeholder - rename/add sibling entries once a real target version is set.
+values:
+  - name: "3.2.x"
+    description: "Spring Boot 3.2.x line (placeholder version)"
+    default: true

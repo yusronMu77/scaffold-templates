@@ -1,0 +1,17 @@
+name: "Scaffolding Code Root"
+description: "Registry of supported frameworks"
+
+# This registry is MANDATORY (PRD v1.8 Section 4.1): without it, a raw directory listing would
+# register .git, .vscode and any stray folder here as a "framework".
+#
+# Each entry distinguishes three identities (PRD v1.8 Section 4.1):
+#   name  - what the user types (here: the positional <framework>)
+#   path  - the on-disk folder, when it differs from `name`
+#   flag  - the CLI flag name, for entries selected by flag rather than positionally
+frameworks:
+  - name: "spring-boot"
+    description: "Spring Boot (Java/Maven)"
+    # `path` omitted on purpose: the folder is spring-boot/ too. This was previously
+    # `name: spring, path: spring-boot`, which made every documented command in every design
+    # note fail with `unknown framework "spring-boot"` (design review 2026-07-27 section 2.1).
+    # PRD Section 4.1 keeps an aliasing example as illustration; it needs no live demo here.

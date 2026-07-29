@@ -1,0 +1,17 @@
+name: "Spring Boot 3.2.x"
+description: "Registry of axes available at this version"
+
+# Each entry distinguishes three identities (PRD v1.8 Section 4.1):
+#   name  - identity of the axis, shown by `scaffold list`
+#   path  - the on-disk folder, when it differs from `name` (omitted here: both match)
+#   flag  - the CLI flag name, when it differs from `name`
+values:
+  - name: "templates"
+    description: "Required base axis - defines what kind of artefact to generate (see templates/manifest.yaml)."
+    # No `flag`: this axis is selected positionally as <category>, not by a flag.
+  - name: "patterns"
+    description: "Optional architecture-style overlay axis (see patterns/manifest.yaml)."
+    flag: "style" # CLI: --style=microservice. The folder stays patterns/.
+                  # Every example in the PRD, plan and diagrams uses --style; before this field
+                  # existed the engine derived the flag from the folder name, so --style was
+                  # accepted and then silently ignored (design review 2026-07-27 section 2.3).
