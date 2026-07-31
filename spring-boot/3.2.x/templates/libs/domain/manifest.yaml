@@ -1,0 +1,9 @@
+name: "Domain library"
+description: "Domain model shared across services"
+type: "library"
+
+variables:
+  - name: "AggregateName"
+    prompt: "Name of the example aggregate"
+    flag: "aggregate"
+    default: "Customer"

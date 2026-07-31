@@ -1,0 +1,8 @@
+app:
+  architecture: monolith
+
+# One deployable unit: no discovery client, so nothing to register with and nothing to look up.
+spring:
+  cloud:
+    discovery:
+      enabled: false

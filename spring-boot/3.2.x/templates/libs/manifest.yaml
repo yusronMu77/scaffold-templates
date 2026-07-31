@@ -1,0 +1,47 @@
+name: "Libraries"
+description: "Reusable jar shared between services - pick what kind"
+
+# ---------------------------------------------------------------------------------------------
+# A sibling of services/, NOT a descendant. That distinction is the whole point of putting shared
+# content at the right level:
+#
+#   inherited from spring-boot/   pom.xml, .gitignore, .editorconfig, layout rules, base variables
+#   NOT inherited from services/  Application.java, ApplicationTests, Dockerfile, actuator
+#
+# A library has no main class and is never containerised, so it correctly receives none of the
+# second group. Nothing had to be excluded to achieve that - it simply lives on a branch that does
+# not pass through services/.
+# ---------------------------------------------------------------------------------------------
+
+# The flag is `kind`, not `category`: `category` is a reserved name (it is the positional
+# <category> argument), so a selector called that would be ambiguous the moment both appear in the
+# same values file. The engine rejects the clash outright rather than guessing.
+selector: "kind"
+default: "common"
+
+values:
+  - name: "common"
+    description: "Shared utilities and cross-cutting helpers"
+  - name: "domain"
+    description: "Domain model shared across services"
+  - name: "client"
+    description: "Typed client for calling another service"
+  - name: "starter"
+    description: "Spring Boot auto-configuration starter"
+
+variables:
+  # A library is a plain jar: the Spring Boot repackage plugin would produce a fat jar that cannot
+  # be used as a dependency. Overriding the framework default here means the shared pom.xml serves
+  # libraries too, instead of a second copy existing just to omit one plugin.
+  - name: "ExecutableJar"
+    default: "false"
+
+dependencies:
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-starter-test"
+    scope: "test"
+
+# A jar is not a container image, so the framework-level .dockerignore is noise here. This is the
+# `remove` operation of the inheritance chain, on a branch that never touched services/.
+exclude:
+  - ".dockerignore"

@@ -1,0 +1,16 @@
+app:
+  architecture: standalone
+
+spring:
+  cloud:
+    discovery:
+      enabled: false
+  main:
+    banner-mode: "off"
+
+# Nothing else is scraping this one, so keep the surface minimal.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,17 @@
+# Only meaningful for a service that listens on a port, which is why it is declared here rather
+# than at services/ - a scheduler must not inherit it.
+server:
+  port: 8080
+  shutdown: graceful
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+# Health probes exposed over HTTP. The probes themselves are enabled at services/; this is only the
+# part that needs a port to be reachable.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

@@ -1,10 +1,10 @@
 name: "Scaffolding Code Root"
 description: "Registry of supported frameworks"
 
-# This registry is MANDATORY (PRD v1.8 Section 4.1): without it, a raw directory listing would
+# This registry is MANDATORY (PRD Section 4.1): without it, a raw directory listing would
 # register .git, .vscode and any stray folder here as a "framework".
 #
-# Each entry distinguishes three identities (PRD v1.8 Section 4.1):
+# Each entry distinguishes three identities (PRD Section 4.1):
 #   name  - what the user types (here: the positional <framework>)
 #   path  - the on-disk folder, when it differs from `name`
 #   flag  - the CLI flag name, for entries selected by flag rather than positionally

@@ -1,0 +1,15 @@
+name: "Standalone"
+description: "Runs on its own - no siblings, no shared platform services"
+type: "pattern"
+
+# ---------------------------------------------------------------------------------------------
+# An OVERLAY on the patterns axis, selected with --style=standalone.
+#
+# A standalone artefact is self-contained: a CLI-ish job, a one-off tool, something that is not
+# part of a service mesh. It shuts down cleanly and does not assume any platform around it.
+# ---------------------------------------------------------------------------------------------
+
+merge_priority: 10
+
+merge_yaml:
+  - "src/main/resources/application.yml"

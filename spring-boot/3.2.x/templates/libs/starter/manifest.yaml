@@ -1,0 +1,16 @@
+name: "Auto-configuration starter"
+description: "Spring Boot starter that configures itself when placed on the classpath"
+type: "library"
+
+variables:
+  - name: "FeatureName"
+    prompt: "Name of the feature this starter configures"
+    flag: "feature"
+    default: "Audit"
+
+dependencies:
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-autoconfigure"
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-configuration-processor"
+    scope: "provided"

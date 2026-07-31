@@ -1,0 +1,52 @@
+name: "Microservice"
+description: "Talks to sibling services - declarative HTTP clients and resilience"
+type: "pattern"
+
+# ---------------------------------------------------------------------------------------------
+# An OVERLAY on the patterns axis, selected with --style=microservice.
+#
+# This is the style that actually adds machinery, and it shows the overlay mechanism doing real
+# work: it contributes DEPENDENCIES (which flow into the shared pom.xml through .Dependencies),
+# a CONFIG CLASS (which the framework-level layout rules place into the right package), and
+# CONFIGURATION KEYS (deep-merged into application.yml rather than replacing it).
+#
+# Note it declares no layout rules and no `files:` entries. Both are inherited from the framework
+# level, even though patterns/ is a sibling axis rather than a descendant of templates/ - which is
+# precisely why those rules belong at the framework level.
+# ---------------------------------------------------------------------------------------------
+
+merge_priority: 10
+
+variables:
+  # The Spring Cloud release train matching this Spring Boot line. 2023.0.x pairs with Boot 3.2.x;
+  # a version folder for a different Boot line overrides this in its own manifest.
+  - name: "SpringCloudVersion"
+    prompt: "Spring Cloud release train"
+    flag: "spring-cloud-version"
+    default: "2023.0.1"
+  - name: "ConnectTimeoutMs"
+    prompt: "Feign connect timeout in milliseconds"
+    flag: "connect-timeout"
+    default: "2000"
+  - name: "ReadTimeoutMs"
+    prompt: "Feign read timeout in milliseconds"
+    flag: "read-timeout"
+    default: "5000"
+
+dependencies:
+  # Spring Cloud sits OUTSIDE the Spring Boot parent's dependency management, so its versions are
+  # not resolved for free the way spring-boot-starter-* are. The BOM below supplies them.
+  #
+  # It is an ordinary entry with `type: pom` and `scope: import` - the engine attaches no meaning
+  # to either, and pom.xml routes import-scoped entries into <dependencyManagement>. That keeps a
+  # Maven-specific rule in the template, where it belongs, instead of in the engine.
+  - groupId: "org.springframework.cloud"
+    artifactId: "spring-cloud-dependencies"
+    version: "{{ .SpringCloudVersion }}"
+    type: "pom"
+    scope: "import"
+  - groupId: "org.springframework.cloud"
+    artifactId: "spring-cloud-starter-openfeign"
+
+merge_yaml:
+  - "src/main/resources/application.yml"
