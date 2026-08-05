@@ -1,0 +1,13 @@
+name: "REST/HTTP service (Spring 5)"
+description: "Overrides only what Spring Boot 2.7 cannot express"
+
+# No selector, no values, no dependencies: all inherited from the 3.2.x node of the same name.
+# This jig.yaml exists so the folder is recognised as a contributing node - its only job is to
+# carry the one file beside it.
+#
+# `target` must stay byte-for-byte identical to the 3.2.x entry - override identity is the OUTPUT
+# path, and a mismatch would silently split this into two files instead of one overridden file.
+
+files:
+  - path: "java/web/ValidationExceptionHandler.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/web/ValidationExceptionHandler.java"

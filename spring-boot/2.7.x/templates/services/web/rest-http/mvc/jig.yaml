@@ -1,0 +1,21 @@
+name: "MVC (layered, Java 8)"
+description: "Same layered MVC as 3.2.x, with the two files Java 8 cannot express as records"
+
+# This folder exists ONLY to override two files. Everything else - Controller, Service, Repository,
+# the exception handler, pom.xml, Dockerfile, the layout rules - is inherited from the 3.2.x
+# template of the same name, because this version declares `inherits: "3.2.x"`.
+#
+# The javax/jakarta split needed no override at all: it is a variable (JakartaNs), so one template
+# serves both lines. Only what genuinely cannot be parameterised lands here - `record` is a
+# language feature Java 8 does not have, so those two files are real copies.
+#
+# Every `target` below must stay byte-for-byte identical to its 3.2.x counterpart - override
+# identity is the OUTPUT path, and a mismatch would silently split one overridden file into two.
+
+files:
+  - path: "java/model/{{ .EntityName }}.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/model/{{ .EntityName }}.java"
+  - path: "java/dto/{{ .EntityName }}Request.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/dto/{{ .EntityName }}Request.java"
+  - path: "java/controller/{{ .EntityName }}NotFoundHandler.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/controller/{{ .EntityName }}NotFoundHandler.java"

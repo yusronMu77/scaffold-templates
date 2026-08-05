@@ -1,0 +1,45 @@
+name: "Scheduled job"
+description: "One worked example job on a cron trigger"
+
+# ---------------------------------------------------------------------------------------------
+# LEVEL 6 (leaf): services/scheduler/none/
+#
+# All three inheritance operations appear on this page, which is why it is worth reading as the
+# reference example:
+#
+#   ADD       java/job/{{ .JobName }}Job.java and resources/application.yml - simply dropped in.
+#   OVERRIDE  handled one level up (scheduler/java/Application.java), not needed here.
+#   REMOVE    `exclude:` below.
+# ---------------------------------------------------------------------------------------------
+
+variables:
+  - name: "JobName"
+    prompt: "Name of the example scheduled job"
+    flag: "job"
+    default: "Cleanup"
+  - name: "JobCron"
+    prompt: "Cron expression for the example job"
+    flag: "cron"
+    default: "0 0 * * * *"
+
+# REMOVE what does not fit. services/ contributes ApplicationTests.java, a bare context-loads test.
+# This template ships a test that starts the context AND asserts the job bean is registered, which
+# makes the generic one redundant - two near-identical @SpringBootTest classes would just double the
+# slowest part of the build for no extra coverage.
+#
+# Patterns match the OUTPUT path, and `**` spans any number of segments so this works whatever the
+# package layout turns out to be. A pattern matching nothing is an error, not silently ignored, so a
+# stale exclusion cannot rot unnoticed.
+exclude:
+  - "src/test/java/**/ApplicationTests.java"
+
+merge:
+  - "src/main/resources/application.yml"
+
+files:
+  - path: "java/job/{{ .JobName }}Job.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/job/{{ .JobName }}Job.java"
+  - path: "test/{{ .JobName }}JobTests.java.tpl"
+    target: "src/test/java/{{ .PackagePath }}/{{ .JobName }}JobTests.java"
+  - path: "resources/application.yml.tpl"
+    target: "src/main/resources/application.yml"

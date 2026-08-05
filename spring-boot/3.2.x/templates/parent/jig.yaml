@@ -1,0 +1,37 @@
+name: "Parent POM"
+description: "Aggregator POM that manages versions for a family of modules"
+
+# ---------------------------------------------------------------------------------------------
+# A leaf with ZERO selector levels: `scaffold create spring-boot parent <name>` needs no flags at
+# all beyond the variables. This is what replaced the old `scaffold init` command - a parent POM is
+# just another template, not a special case in the engine.
+#
+# It contributes no files whatsoever. Everything it produces is inherited from spring-boot/, and
+# the two variables below are enough to turn that shared pom.xml into a parent POM:
+#
+#   Packaging: pom      -> <packaging>pom</packaging>, and .Dependencies renders into
+#                          <dependencyManagement> instead of <dependencies>
+#   ExecutableJar: false -> no spring-boot-maven-plugin (there is nothing to repackage)
+#
+# That is the payoff of keeping pom.xml at the scaffold level with its differences expressed as
+# values: a third artefact kind needed no third copy of the file.
+# ---------------------------------------------------------------------------------------------
+
+variables:
+  - name: "Packaging"
+    default: "pom"
+  - name: "ExecutableJar"
+    default: "false"
+
+# The modules this parent manages versions for. Listed as dependencies so they land in
+# <dependencyManagement>; a real parent would grow this list as the family grows.
+dependencies:
+  - groupId: "{{ .GroupId }}"
+    artifactId: "lib-common"
+  - groupId: "{{ .GroupId }}"
+    artifactId: "lib-domain"
+
+# Neither applies to a POM-only artefact: there is no image to build and no source tree to ignore.
+exclude:
+  - ".dockerignore"
+  - ".editorconfig"

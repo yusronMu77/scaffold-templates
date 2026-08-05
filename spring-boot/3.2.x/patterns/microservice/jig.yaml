@@ -1,0 +1,67 @@
+name: "Microservice"
+description: "Talks to sibling services - declarative HTTP clients and resilience"
+
+# ---------------------------------------------------------------------------------------------
+# An OVERLAY on the patterns dimension, selected with --style=microservice.
+#
+# This is the style that actually adds machinery, and it shows the overlay mechanism doing real
+# work: it contributes DEPENDENCIES (which flow into the shared pom.xml through .Dependencies),
+# a CONFIG CLASS (which the scaffold-level layout rules place into the right package), and
+# CONFIGURATION KEYS (deep-merged into application.yml rather than replacing it).
+#
+# Note it declares no layout RULES of its own - those are inherited from the scaffold level, even
+# though patterns/ is a sibling dimension rather than a descendant of templates/, which is
+# precisely why those rules belong at the scaffold level. The `files:` entries below exist only
+# because the source files are named with an editor-only `.tpl` suffix
+# (scaffolding-code/.vscode/README.md);
+# `target` restates the inherited layout by hand since an explicit `target` overrides `layout:`
+# rather than composing with it.
+# ---------------------------------------------------------------------------------------------
+
+merge_priority: 10
+
+# SpringCloudVersion is deliberately NOT declared here, even though this is the only thing that
+# uses it. It lives in each <version>/jig.yaml instead.
+#
+# It was declared here once, with a comment claiming a version folder could override it. That was
+# false: an overlay is applied LAST in the source order, so this declaration beat the version's and
+# --style=microservice on 2.7.x silently imported the Spring Boot 3 release train. `lint` passed on
+# all twenty combinations - the version is a variable, so everything rendered perfectly - and
+# `lint --build` is what found it.
+#
+# The lesson generalises: an overlay must not carry a default for anything a version has an opinion
+# about, because an overlay always wins.
+
+variables:
+  - name: "ConnectTimeoutMs"
+    prompt: "Feign connect timeout in milliseconds"
+    flag: "connect-timeout"
+    default: "2000"
+  - name: "ReadTimeoutMs"
+    prompt: "Feign read timeout in milliseconds"
+    flag: "read-timeout"
+    default: "5000"
+
+dependencies:
+  # Spring Cloud sits OUTSIDE the Spring Boot parent's dependency management, so its versions are
+  # not resolved for free the way spring-boot-starter-* are. The BOM below supplies them.
+  #
+  # It is an ordinary entry with `type: pom` and `scope: import` - the engine attaches no meaning
+  # to either, and pom.xml routes import-scoped entries into <dependencyManagement>. That keeps a
+  # Maven-specific rule in the template, where it belongs, instead of in the engine.
+  - groupId: "org.springframework.cloud"
+    artifactId: "spring-cloud-dependencies"
+    version: "{{ .SpringCloudVersion }}"
+    type: "pom"
+    scope: "import"
+  - groupId: "org.springframework.cloud"
+    artifactId: "spring-cloud-starter-openfeign"
+
+merge:
+  - "src/main/resources/application.yml"
+
+files:
+  - path: "java/config/FeignClientConfig.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/config/FeignClientConfig.java"
+  - path: "resources/application.yml.tpl"
+    target: "src/main/resources/application.yml"

@@ -1,0 +1,38 @@
+name: "REST/HTTP service"
+description: "HTTP/JSON API - pick how the code is organised"
+
+# ---------------------------------------------------------------------------------------------
+# LEVEL 6: services/web/rest-http/
+#
+# Owns what every HTTP/JSON API needs regardless of how its code is organised: the web starter,
+# validation, the JSON conventions, and a validation error handler that knows nothing about any
+# particular domain object.
+#
+# The selector below is the code-organisation level. `mvc` is the first one; `ddd`, `hexagonal`,
+# `clean` and so on are added by dropping a folder next to mvc/ plus one line in `values:` - they
+# inherit everything on this page without repeating a word of it.
+#
+# The flag is --structure, not --style: --style belongs to the patterns dimension, which is about
+# deployment architecture (monolith/microservice/standalone). The two are orthogonal - MVC in a
+# monolith and MVC in a microservice are both valid.
+# ---------------------------------------------------------------------------------------------
+
+selector: "structure"
+default: "mvc"
+
+values:
+  - name: "mvc"
+    description: "Layered: Controller -> Service -> Repository"
+
+dependencies:
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-starter-web"
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-starter-validation"
+
+merge:
+  - "src/main/resources/application.yml"
+
+files:
+  - path: "java/web/ValidationExceptionHandler.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/web/ValidationExceptionHandler.java"
