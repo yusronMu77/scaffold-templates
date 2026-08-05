@@ -1,0 +1,26 @@
+name: "Spring Boot 2.7.x"
+description: "Legacy line: javax.* namespace, Java 8 baseline"
+
+# The whole version. Everything else - pom.xml, the layout rules, every template under
+# templates/ - is inherited from 3.2.x, which this version declares as its base.
+#
+# JakartaNs is what the templates interpolate instead of hardcoding a namespace, so the same
+# Controller/Service/Repository files serve both lines.
+variables:
+  - name: "SpringBootVersion"
+    default: "2.7.18"
+  - name: "JavaVersion"
+    default: "8"
+  - name: "JakartaNs"
+    default: "javax"
+
+  # Spring Cloud release trains are pinned to a Spring Boot line. 2023.0.x pairs with Boot 3.2 and
+  # is compiled against Spring Framework 6, so importing it here produced a build that resolved
+  # cleanly and then died at runtime with NoClassDefFoundError on a Framework 6 class. 2021.0.x is
+  # the train for Boot 2.7.
+  #
+  # The microservice overlay always intended this to be overridden per version - its comment says
+  # so. Nothing enforced it, and `lint` could not: the BOM version is a variable, so every
+  # combination rendered perfectly. `lint --build` is what caught it.
+  - name: "SpringCloudVersion"
+    default: "2021.0.9"

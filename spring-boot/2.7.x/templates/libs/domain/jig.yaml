@@ -1,0 +1,18 @@
+name: "Domain library (Java 8)"
+description: "Same shared domain model as 3.2.x, without records"
+
+# This folder exists ONLY to override one file. The variables, the description, the dependencies -
+# everything else - are inherited from the 3.2.x template of the same name.
+#
+# Found by `lint --build`, not by `lint`. The aggregate was a `record`, which Java 8 does not have,
+# so this combination rendered perfectly and then failed to compile. The mvc model had already been
+# given exactly this treatment; libs/domain was simply missed, and nothing that only looks at
+# templates could have noticed.
+#
+# `target` here must stay byte-for-byte identical to the 3.2.x entry below - override identity is
+# the OUTPUT path, and a mismatch here would silently split this into two files instead of one
+# overridden file.
+
+files:
+  - path: "java/{{ .AggregateName }}.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .AggregateName }}.java"

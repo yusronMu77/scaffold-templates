@@ -1,0 +1,13 @@
+name: "Common library"
+description: "Shared utilities - no Spring dependency beyond the test scope"
+
+# Leaf. Everything structural is inherited; this only adds one worked example class.
+variables:
+  - name: "UtilName"
+    prompt: "Name of the example utility class"
+    flag: "util"
+    default: "Strings"
+
+files:
+  - path: "java/{{ .UtilName }}.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .UtilName }}.java"

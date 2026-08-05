@@ -1,0 +1,12 @@
+name: "Templates"
+description: "Required base dimension - defines what kind of artefact to generate"
+required: true
+
+values:
+  - name: "services"
+    description: "Spring Boot service template (function + protocol selector chain)"
+    default: true
+  - name: "libs"
+    description: "Reusable library template (kind selector)"
+  - name: "parent"
+    description: "Parent POM template (no further selection - replaces the old scaffold init)"

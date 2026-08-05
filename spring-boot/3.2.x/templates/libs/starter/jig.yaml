@@ -1,0 +1,25 @@
+name: "Auto-configuration starter"
+description: "Spring Boot starter that configures itself when placed on the classpath"
+
+variables:
+  - name: "FeatureName"
+    prompt: "Name of the feature this starter configures"
+    flag: "feature"
+    default: "Audit"
+
+dependencies:
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-autoconfigure"
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-configuration-processor"
+    scope: "provided"
+
+files:
+  - path: "java/{{ .FeatureName }}AutoConfiguration.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .FeatureName }}AutoConfiguration.java"
+  - path: "java/{{ .FeatureName }}Properties.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .FeatureName }}Properties.java"
+  - path: "java/{{ .FeatureName }}Service.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .FeatureName }}Service.java"
+  - path: "resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports.tpl"
+    target: "src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports"

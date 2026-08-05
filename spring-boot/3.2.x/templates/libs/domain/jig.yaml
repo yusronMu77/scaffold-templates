@@ -1,0 +1,12 @@
+name: "Domain library"
+description: "Domain model shared across services"
+
+variables:
+  - name: "AggregateName"
+    prompt: "Name of the example aggregate"
+    flag: "aggregate"
+    default: "Customer"
+
+files:
+  - path: "java/{{ .AggregateName }}.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .AggregateName }}.java"

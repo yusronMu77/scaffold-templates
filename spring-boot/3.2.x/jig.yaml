@@ -1,0 +1,58 @@
+name: "Spring Boot 3.2.x"
+description: "Registry of dimensions at this version, plus the values specific to the 3.2 line"
+
+# ---------------------------------------------------------------------------------------------
+# LEVEL 2 of the inheritance chain: <version>/
+#
+# This level inherits everything from spring-boot/ - the pom.xml, .gitignore, .editorconfig, the
+# base variables - and declares ONLY what is genuinely different about this release line.
+#
+# Adding a 3.3 line later therefore means: one new folder, one jig.yaml like this one, one line in
+# the `values:` list above. No file is copied. If 3.3 needs a file the 3.2 line does not, it drops
+# it in its own folder and only 3.3 gets it.
+#
+# The folder name is a range ("3.2.x") because it groups a release line. The value written into
+# pom.xml must be a single concrete release, because Maven cannot resolve a range there - which is
+# exactly why the two are separate things.
+# ---------------------------------------------------------------------------------------------
+
+variables:
+  # The namespace Spring migrated at the 3.0 boundary. Making it a variable means ONE set of
+  # templates serves both release lines - the alternative is a second copy of every file that
+  # imports it, differing by four letters.
+  - name: "JakartaNs"
+    prompt: "Validation/servlet namespace root"
+    flag: "jakarta-ns"
+    default: "jakarta"
+  - name: "SpringBootVersion"
+    default: "3.2.5"
+  # Spring Boot 3.x requires Java 17 as a baseline, so the floor is a property of this line.
+  - name: "JavaVersion"
+    default: "17"
+
+  # Which Spring Cloud release train pairs with this Boot line. Only the microservice overlay uses
+  # it, and it USED to be declared there - which was wrong, and `lint --build` proved it:
+  #
+  # An overlay is applied LAST in the source order, after the version. So the overlay's own
+  # `default: 2023.0.1` beat the 2.7.x line's override of the same variable, and --style=microservice
+  # on 2.7.x imported a BOM compiled against Spring Framework 6. It resolved, it compiled, and it
+  # died at runtime on NoClassDefFoundError.
+  #
+  # Declaring it here fixes it and is also simply more honest: the release train is a property of
+  # the Boot line, not of the architecture pattern. 2.7.x overrides it with 2021.0.9.
+  - name: "SpringCloudVersion"
+    prompt: "Spring Cloud release train matching this Spring Boot line"
+    flag: "spring-cloud-version"
+    default: "2023.0.1"
+
+# Each entry distinguishes three identities (PRD Section 4.1):
+#   name  - identity of the dimension, shown by `scaffold list`
+#   path  - the on-disk folder, when it differs from `name` (omitted here: both match)
+#   flag  - the CLI flag name, when it differs from `name`
+values:
+  - name: "templates"
+    description: "Required base dimension - what kind of artefact to generate (see templates/jig.yaml)."
+    # No `flag`: this dimension is selected positionally as <template>, not by a flag.
+  - name: "patterns"
+    description: "Optional architecture-style overlay (see patterns/jig.yaml)."
+    flag: "style" # CLI: --style=microservice. The folder stays patterns/.

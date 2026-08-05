@@ -1,0 +1,17 @@
+name: "Client library (Spring 5)"
+description: "Same typed client as 3.2.x, built on RestTemplate"
+
+# Overrides one file. The variables, the computed TargetServiceTitle and the web dependency are all
+# inherited from the 3.2.x template of the same name.
+#
+# Found by `lint --build`. RestClient arrived in Spring Framework 6.1 (Boot 3.2); on this line the
+# import simply does not resolve. Rendering was flawless - `RestClient` is a plain word in a
+# template, indistinguishable from any other - so only a compiler could tell.
+#
+# `target` here must stay byte-for-byte identical to the 3.2.x entry - override identity is the
+# OUTPUT path, and a mismatch would silently split this into two files instead of one overridden
+# file.
+
+files:
+  - path: "java/{{ .TargetServiceTitle }}Client.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .TargetServiceTitle }}Client.java"
