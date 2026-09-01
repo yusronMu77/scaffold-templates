@@ -162,3 +162,5 @@ values:
     # Inherits every template from 3.2.x and overrides ONLY what the older line changes.
     # Without this, supporting 2.7 would mean a second copy of the whole templates/ tree.
     inherits: "3.2.x"
+  - name: "hello-world"
+    description: "A simple Spring Boot application"
