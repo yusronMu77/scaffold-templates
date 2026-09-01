@@ -53,4 +53,6 @@ public class {{ .EntityName }}Controller {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // @scaffold:routes
 }

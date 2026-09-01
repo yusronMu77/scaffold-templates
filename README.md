@@ -162,6 +162,11 @@ the spliced block — if it's already there, the insert is skipped. `lint` rende
 these entries but never applies them, since its combinations never have a pre-existing file to
 splice into.
 
+Worked example: `spring-boot/3.2.x/templates/services/web/rest-http/mvc/jig.yaml`'s
+`WithSearchByName` variable (`--search-by-name=true`) splices a `findByName` route into the
+Controller, Service and Repository this same leaf already writes — see
+`values/spring-boot/service-rest-mvc-search-by-name.yaml` for a ready-to-run example.
+
 ## License
 
 Distributed under the [MIT License](LICENSE).
