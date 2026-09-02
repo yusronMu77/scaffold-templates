@@ -41,4 +41,6 @@ public class {{ .EntityName }}Repository {
     public boolean deleteById(Long id) {
         return store.remove(id) != null;
     }
+
+    // @scaffold:repository-methods
 }

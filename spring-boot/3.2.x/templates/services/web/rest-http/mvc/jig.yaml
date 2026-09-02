@@ -34,6 +34,17 @@ variables:
     flag: "entity"
     default: "Item"
 
+  # Worked example for insert_after/insert_before (scaffold-cli#11): off by default, so it doesn't
+  # change what every ordinary `create` produces. Set --search-by-name=true (see
+  # values/spring-boot/service-rest-mvc-search-by-name.yaml) to splice a findByName route into the
+  # controller, service and repository this same leaf already writes - see the three
+  # find-by-name.*.tpl files: entries below. Assumes the entity's default `name` field (see the
+  # snippets themselves), same caveat as `create()`'s worked example already carries.
+  - name: "WithSearchByName"
+    prompt: "Add a findByName search route across controller/service/repository (demonstrates insert_after)"
+    flag: "search-by-name"
+    default: "false"
+
 # ---------------------------------------------------------------------------------------------
 # THE ENTITY'S SHAPE. A variable cannot hold this: it is a list of objects, and one of the keys is
 # itself a list of annotation lines. That is what `data:` is for.
@@ -79,3 +90,19 @@ files:
     target: "src/main/java/{{ .PackagePath }}/controller/{{ .EntityName }}NotFoundHandler.java"
   - path: "resources/application.yml.tpl"
     target: "src/main/resources/application.yml"
+
+  # See the WithSearchByName comment above. Each splices into a file this same leaf already
+  # writes, right after the run writes it - the target doesn't need to pre-exist from an earlier
+  # `create`.
+  - path: "java/repository/find-by-name.repository.tpl"
+    target: "src/main/java/{{ .PackagePath }}/repository/{{ .EntityName }}Repository.java"
+    condition: "WithSearchByName"
+    insert_after: "// @scaffold:repository-methods"
+  - path: "java/service/find-by-name.service.tpl"
+    target: "src/main/java/{{ .PackagePath }}/service/{{ .EntityName }}Service.java"
+    condition: "WithSearchByName"
+    insert_after: "// @scaffold:service-methods"
+  - path: "java/controller/find-by-name.controller.tpl"
+    target: "src/main/java/{{ .PackagePath }}/controller/{{ .EntityName }}Controller.java"
+    condition: "WithSearchByName"
+    insert_after: "// @scaffold:routes"

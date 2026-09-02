@@ -39,4 +39,6 @@ public class {{ .EntityName }}Service {
             throw new {{ .EntityName }}NotFoundException(id);
         }
     }
+
+    // @scaffold:service-methods
 }

@@ -1,0 +1,44 @@
+name: "Hello World"
+description: "Minimal runnable Spring Boot app - no web, no persistence, just a main class"
+
+# A sibling of services/, NOT a descendant (same split as libs/jig.yaml): it inherits the shared
+# pom.xml, .gitignore and Maven layout from spring-boot/, but none of services/'s Dockerfile,
+# actuator or Application.java, since those are declared at services/ and this leaf does not pass
+# through that folder.
+#
+# One GET endpoint is included below so `mvn spring-boot:run` actually serves something - but
+# still no actuator, no tests, no Dockerfile. Anything beyond a single endpoint belongs in
+# services/web instead of growing this leaf.
+
+variables:
+  - name: "ApplicationName"
+    prompt: "Prefix for the generated Application class (e.g. Hello -> HelloApplication)"
+    default: "Hello"
+
+  # Not a version line (unlike 3.2.x/2.7.x), so nothing else supplies these - the scaffold level
+  # requires them with no default precisely so a leaf like this can't skip setting one.
+  - name: "SpringBootVersion"
+    default: "3.2.5"
+  - name: "JavaVersion"
+    default: "17"
+
+# What actually makes SpringApplication/@SpringBootApplication available - services/ declares its
+# own copy of this for the same reason (libs/jig.yaml explains the split). spring-boot-starter-web
+# is added on top of that so the one Controller below can use @RestController/@GetMapping;
+# services/ declares its own copy too, for the same reason.
+dependencies:
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-starter"
+  - groupId: "org.springframework.boot"
+    artifactId: "spring-boot-starter-web"
+
+# An explicit target always wins over `layout:` rather than composing with it, so the java/
+# layout rule has to be restated here (same as services/jig.yaml's own Application.java entry) -
+# this is also what strips the `.tpl` suffix, which exists only for editor highlighting.
+files:
+  - path: "java/{{ .ApplicationName }}Application.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .ApplicationName }}Application.java"
+  - path: "java/{{ .ApplicationName }}Controller.java.tpl"
+    target: "src/main/java/{{ .PackagePath }}/{{ .ApplicationName }}Controller.java"
+  - path: "pom.xml.tpl"
+    target: "pom.xml"
