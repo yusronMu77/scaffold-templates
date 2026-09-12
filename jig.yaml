@@ -24,3 +24,5 @@ values:
     description: "Go + chi"
   - name: "react-vite"
     description: "React + Vite (frontend)"
+  - name: "rust-axum"
+    description: "Rust + Axum"

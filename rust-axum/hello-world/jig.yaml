@@ -1,0 +1,9 @@
+name: "Hello World"
+description: "Minimal runnable Axum service - no persistence, just a GET / and a GET /healthz"
+
+# Everything reusable already lives at rust-axum/ (Cargo.toml, .gitignore, .editorconfig,
+# variables) - this leaf only adds the one source file a future variant might not share.
+
+files:
+  - path: "src/main.rs.tpl"
+    target: "src/main.rs"
