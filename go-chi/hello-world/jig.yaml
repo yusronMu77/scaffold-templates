@@ -1,0 +1,12 @@
+name: "Hello World"
+description: "Minimal runnable chi service - no persistence, just a GET / and a GET /healthz"
+
+# Everything reusable already lives at go-chi/ (go.mod, .gitignore, .editorconfig, variables,
+# the ServiceName computed value) - this leaf only adds the two route files a future variant
+# might not share.
+
+files:
+  - path: "main.go.tpl"
+    target: "main.go"
+  - path: "main_test.go.tpl"
+    target: "main_test.go"

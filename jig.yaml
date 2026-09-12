@@ -20,3 +20,5 @@ values:
     description: "Node.js + Express (JavaScript)"
   - name: "python-fastapi"
     description: "Python + FastAPI"
+  - name: "go-chi"
+    description: "Go + chi"
