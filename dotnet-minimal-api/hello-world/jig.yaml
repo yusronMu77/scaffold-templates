@@ -1,0 +1,25 @@
+name: "Hello World"
+description: "Minimal runnable ASP.NET Core Minimal API - no persistence, just a GET / and a GET /healthz"
+
+# Two projects plus a solution file tying them together: `src/{{ .ProjectName }}` (the Minimal
+# API itself, Microsoft.NET.Sdk.Web) and `tests/{{ .ProjectName }}.Tests` (an xUnit project using
+# WebApplicationFactory<Program> for real in-process HTTP integration tests). They are SIBLING
+# folders, not nested one inside the other - an SDK-style project's default item globbing pulls
+# in every *.cs under its own directory recursively, so nesting the test project under the app's
+# folder made the app project try to compile the test project's own sources too.
+#
+# `.csproj`/`.sln` files templated here (not at dotnet-minimal-api/, unlike every other new
+# scaffold's package manifest) since a future variant would need a differently shaped project
+# file, not just different values in this one.
+
+files:
+  - path: "{{ .ProjectName }}.sln.tpl"
+    target: "{{ .ProjectName }}.sln"
+  - path: "src/{{ .ProjectName }}/{{ .ProjectName }}.csproj.tpl"
+    target: "src/{{ .ProjectName }}/{{ .ProjectName }}.csproj"
+  - path: "src/{{ .ProjectName }}/Program.cs.tpl"
+    target: "src/{{ .ProjectName }}/Program.cs"
+  - path: "tests/{{ .ProjectName }}.Tests/{{ .ProjectName }}.Tests.csproj.tpl"
+    target: "tests/{{ .ProjectName }}.Tests/{{ .ProjectName }}.Tests.csproj"
+  - path: "tests/{{ .ProjectName }}.Tests/ApiTests.cs.tpl"
+    target: "tests/{{ .ProjectName }}.Tests/ApiTests.cs"
