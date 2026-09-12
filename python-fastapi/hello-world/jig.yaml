@@ -1,0 +1,12 @@
+name: "Hello World"
+description: "Minimal runnable FastAPI app - no persistence, just a GET / and a GET /healthz"
+
+# Everything reusable already lives at python-fastapi/ (requirements.txt, .python-version,
+# .gitignore, .editorconfig, variables) - this leaf only adds the two route files a future
+# variant might not share.
+
+files:
+  - path: "main.py.tpl"
+    target: "main.py"
+  - path: "test_main.py.tpl"
+    target: "test_main.py"

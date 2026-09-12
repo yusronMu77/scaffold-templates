@@ -18,3 +18,5 @@ values:
     # PRD Section 4.1 keeps an aliasing example as illustration; it needs no live demo here.
   - name: "node-express"
     description: "Node.js + Express (JavaScript)"
+  - name: "python-fastapi"
+    description: "Python + FastAPI"
