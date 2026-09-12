@@ -1,0 +1,13 @@
+name: "Hello World"
+description: "Minimal React app rendering Hello, <PackageName> - no routing, no state management"
+
+# Everything reusable already lives at react-vite/ (package.json, vite.config.ts, index.html,
+# tsconfig.json, .gitignore, .editorconfig, variables) - this leaf only adds the two source
+# files a future variant might not share.
+
+files:
+  - path: "src/main.tsx.tpl"
+    target: "src/main.tsx"
+    template: false
+  - path: "src/App.tsx.tpl"
+    target: "src/App.tsx"
