@@ -1,0 +1,11 @@
+name: "Hello World"
+description: "Minimal runnable Express app - no persistence, just a GET / and a GET /healthz"
+
+# Everything reusable already lives at node-express/ (package.json, .gitignore, .editorconfig,
+# variables) - this leaf only adds the two route files a future variant might not share.
+
+files:
+  - path: "src/index.js.tpl"
+    target: "src/index.js"
+  - path: "test/index.test.js.tpl"
+    target: "test/index.test.js"

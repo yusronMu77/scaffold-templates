@@ -16,3 +16,5 @@ values:
     # `name: spring, path: spring-boot`, which made every documented command in every design
     # note fail with `unknown scaffold "spring-boot"` (design review 2026-07-27 section 2.1).
     # PRD Section 4.1 keeps an aliasing example as illustration; it needs no live demo here.
+  - name: "node-express"
+    description: "Node.js + Express (JavaScript)"
