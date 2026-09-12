@@ -22,3 +22,5 @@ values:
     description: "Python + FastAPI"
   - name: "go-chi"
     description: "Go + chi"
+  - name: "react-vite"
+    description: "React + Vite (frontend)"

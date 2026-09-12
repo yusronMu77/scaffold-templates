@@ -1,0 +1,26 @@
+{
+  "name": "{{ .PackageName }}",
+  "version": "0.0.1",
+  "description": "{{ .Description }}",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">={{ .NodeVersion }}"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.6"
+  }
+}
