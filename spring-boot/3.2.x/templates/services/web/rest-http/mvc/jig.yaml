@@ -73,6 +73,26 @@ data:
 merge:
   - "src/main/resources/application.yml"
 
+# ---------------------------------------------------------------------------------------------
+# `--mode` (scaffold-cli#69): a selector added ON TOP of this same leaf, not a replacement for it.
+# Every file/variable/data declaration above and below stays exactly where it is and is inherited
+# by BOTH values below - that is what makes `--mode=project` (the default) byte-for-byte identical
+# to every `--structure=mvc` invocation before this selector existed.
+#
+#   project  ->  mvc/project/jig.yaml is intentionally empty: nothing to add, walk ends there.
+#   entity   ->  mvc/entity/jig.yaml adds `flat_output: true` and `exclude:`s away everything this
+#                chain contributes ABOVE mvc/ (pom.xml, Application.java, Dockerfile, ...), leaving
+#                only the CRUD files declared right here - see that folder's own jig.yaml.
+# ---------------------------------------------------------------------------------------------
+selector: "mode"
+default: "project"
+
+values:
+  - name: "project"
+    description: "Full MVC project, exactly as before this selector existed (default)"
+  - name: "entity"
+    description: "Just the CRUD layer for one entity, to add into an existing project (flat_output)"
+
 files:
   - path: "java/model/{{ .EntityName }}.java.tpl"
     target: "src/main/java/{{ .PackagePath }}/model/{{ .EntityName }}.java"
