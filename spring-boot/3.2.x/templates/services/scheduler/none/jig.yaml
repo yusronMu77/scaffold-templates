@@ -36,6 +36,26 @@ exclude:
 merge:
   - "src/main/resources/application.yml"
 
+# ---------------------------------------------------------------------------------------------
+# `--mode` (scaffold-cli#79, mirrors #69 on the mvc leaf): a selector added ON TOP of this same
+# leaf, not a replacement for it. Every file/variable declared above and below is inherited by
+# BOTH values below, so `--mode=project` (the default) stays byte-for-byte identical to every
+# scheduler create before this selector existed.
+#
+#   project  ->  none/project/jig.yaml is intentionally empty: nothing to add, walk ends there.
+#   job      ->  none/job/jig.yaml adds `flat_output: true` and `exclude:`s away everything this
+#                chain contributes ABOVE none/ (pom.xml, Application.java, Dockerfile, ...),
+#                leaving only the job (+ its test) declared right here - see that folder's jig.yaml.
+# ---------------------------------------------------------------------------------------------
+selector: "mode"
+default: "project"
+
+values:
+  - name: "project"
+    description: "Full scheduler service, exactly as before this selector existed (default)"
+  - name: "job"
+    description: "Just one new job, to add into an already-existing scheduler service (flat_output)"
+
 files:
   - path: "java/job/{{ .JobName }}Job.java.tpl"
     target: "src/main/java/{{ .PackagePath }}/job/{{ .JobName }}Job.java"
