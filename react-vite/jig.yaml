@@ -23,6 +23,12 @@ variables:
     flag: "node-version"
     default: "20"
 
+# Deep-merged rather than replaced, so a later invocation (e.g. a component adding an npm
+# dependency) can add package.json keys without clobbering what an earlier invocation wrote -
+# same mechanism spring-boot already uses for application.yml.
+merge:
+  - "package.json"
+
 files:
   # `.gitignore` cannot be checked in under its real name (git would apply it to
   # scaffolding-code itself), so it is stored renamed and left untemplated - same reasoning as
