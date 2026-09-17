@@ -1,0 +1,4 @@
+# Intentionally empty. This is the default value of the `--mode` selector ../jig.yaml declares
+# (scaffold-cli#79) - the walk descends here and finds nothing further to add, so a plain
+# scheduler create stays byte-for-byte identical to every one before this folder existed.
+# See ../job/jig.yaml for the other value.

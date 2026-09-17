@@ -1,0 +1,54 @@
+name: "Job only (existing project)"
+description: "Adds one scheduled job to an already-generated scheduler service - no skeleton files"
+
+# ---------------------------------------------------------------------------------------------
+# LEVEL 7 (leaf): services/scheduler/none/job/  (scaffold-cli#79)
+#
+# The other value of the `--mode` selector ../jig.yaml declares. Declares no files/variables of
+# its own - the job class and its test (parameterised by JobName/JobCron) are inherited straight
+# from ../jig.yaml, unchanged, the same walk-chain composition every level in this tree already
+# relies on.
+#
+# What's left to say here is only the DIFFERENCE from a full scheduler create:
+#
+#   `flat_output: true`  write straight into --output instead of nesting a new <name>/ project
+#                         folder, so `--output=<existing-project-dir>` lands the job files
+#                         directly inside it (issue #53's mechanism, applied here for #79).
+#
+#   `exclude:`            this chain unconditionally contributes a whole new project's skeleton
+#                         above this leaf (spring-boot/'s pom.xml + dotfiles, services/'s
+#                         Application.java/Dockerfile, scheduler/'s @EnableScheduling override of
+#                         Application.java, and application.yml) - none of that belongs when the
+#                         target is a project that already exists, so it is stripped back out
+#                         here rather than never collected at all. ApplicationTests.java is NOT
+#                         listed again: ../jig.yaml already excludes it, so re-excluding it here
+#                         would match nothing and fail the "stale exclusion" check by design.
+#
+# Safe to `create` repeatedly against the same --output with a different --job each time, the same
+# way #69's mvc/entity leaf is safe to repeat with a different --entity - nothing here writes a
+# file whose name isn't already parameterised by JobName.
+#
+# `verify:` overrides the inherited `compiles` check (spring-boot/jig.yaml's `mvn -B -q test`) by
+# name: `lint --build` renders every combination into its OWN empty temp directory, so a leaf that
+# deliberately excludes pom.xml has no POM for `mvn test` to run against there - unlike the real
+# use case, an existing project that already has one. Nothing is actually lost: these are the same
+# .tpl files --mode=project's own `compiles` check already builds, so `mvn --version` here only
+# proves mvn itself is reachable, not a second, redundant compile of identical sources.
+# ---------------------------------------------------------------------------------------------
+
+flat_output: true
+
+verify:
+  - name: "compiles"
+    description: "No standalone pom.xml to build against by design (see above) - the same source \
+      files are already compiled by --mode=project's `compiles` check."
+    command: ["mvn", "-B", "-q", "--version"]
+
+exclude:
+  - ".gitignore"
+  - ".dockerignore"
+  - ".editorconfig"
+  - "pom.xml"
+  - "Dockerfile"
+  - "src/main/java/**/Application.java"
+  - "src/main/resources/application.yml"
