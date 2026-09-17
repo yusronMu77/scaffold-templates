@@ -7,6 +7,7 @@ description = "{{ .Description }}"
 [dependencies]
 axum = "0.7"
 tokio = { version = "1", features = ["full"] }
+# @scaffold:dependencies
 
 [dev-dependencies]
 tower = { version = "0.5", features = ["util"] }

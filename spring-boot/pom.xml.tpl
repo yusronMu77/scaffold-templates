@@ -95,6 +95,7 @@
       {{- end }}
     </dependency>
 {{- end }}
+    <!-- @scaffold:dependencies -->
   </dependencies>
 {{- end }}
 
