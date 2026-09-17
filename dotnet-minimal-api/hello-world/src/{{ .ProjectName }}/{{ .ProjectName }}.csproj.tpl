@@ -9,4 +9,8 @@
     <Description>{{ .Description }}</Description>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- @scaffold:dependencies -->
+  </ItemGroup>
+
 </Project>
